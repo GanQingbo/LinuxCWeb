@@ -3,7 +3,7 @@ int main(int argc, char **argv)
 {
     int listen_sock, conn_sock, port, clientlen;
     struct sockaddr_in clientaddr;
-
+    pthread_t tid;
     /*检查命令行和参数 */
     if (argc != 2) {
             fprintf(stderr, "usage: %s <port>\n", argv[0]);
@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     while (1) {//利用循环不断接收链接请求
             clientlen = sizeof(clientaddr);
             conn_sock = accept(listen_sock, (SA *)&clientaddr, &clientlen);
-            process_trans(conn_sock);          //处理HTTP事务
+            pthread_create(&tid,NULL,process_trans,conn_sock);//创建处理线程
             close(conn_sock); //关闭连接
     }
 }
