@@ -71,7 +71,7 @@ void feed_static(int fd,char *filename,int filesize)
         rio_writen(fd,srcp,filesize);
         munmap(srcp,filesize);
 }
-void get_fileetype(char *filename,char*filetype)
+void get_filetype(char *filename,char*filetype)
 {
         if(strstr(filename,".html"))
                 strcpy(filetype,"text/html");
