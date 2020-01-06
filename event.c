@@ -63,7 +63,7 @@ void error_request(int fd,char *cause,char *errnum,char *shortmsg,char *descript
         sprintf(body,"<html><title>error request</title>");
         sprintf(body,"%s<body>\r\n",body);
         sprintf(body,"%s%s:%s\r\n",body,errnum,shortmsg);
-        sprintf(body,"%s<p>%s:%s\r\n,body,description,cause");
+        sprintf(body,"%s<p>%s:%s\r\n",body,description,cause);
         sprintf(body,"%s<hr><em>WebServer</em>\r\n",body);
         sprintf(buf,"HTTP/1.0%s%s\r\n",errnum,shortmsg);
         rio_writen(fd,buf,strlen(buf));
@@ -92,12 +92,12 @@ void parse_static_uri(char *uri,char *filename)
         strcpy(filename,".");
         strcat(filename,uri);
         if(uri[strlen(uri)-1]=='/')
-            strcat(filename,"index.html");
+            strcat(filename,"home.html");
 }
 void parse_dynamic_uri(char *uri,char *filename,char *cg)
 {
         char *ptr;
-        ptr=index(uri,"?");
+        ptr=index(uri,'?');
         if(ptr){
             strcpy(cg,ptr+1);
             *ptr='\0';
