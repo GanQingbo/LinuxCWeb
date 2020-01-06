@@ -1,4 +1,4 @@
-#include "myweb.h"
+#include "weblet.h"
 
 //读出并解释请求，判断网页类型，调用函数提供相应网页内容
 void process_trans(int fd)
