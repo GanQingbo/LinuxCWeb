@@ -15,6 +15,7 @@
 #include <sys/msg.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <pthread.h>
@@ -53,6 +54,6 @@ ssize_t	rio_readlineb(rio_t *rp, void *usrbuf, size_t maxlen);
 int open_client_sock(char *hostname, int portno);
 int open_listen_sock(int portno);
 
-
+void *mmap(void *start,size_t length,int prot,int flags,int fd,off_t offsize);
 #endif
 
