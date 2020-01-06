@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include <netinet/in.h>
-#include <apra/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <pthread.h>
@@ -13,10 +13,13 @@
 
 #define DEF_MODE   S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH
 #define DEF_UMASK  S_IWGRP|S_IWOTH
+
 #define RIO_BUFSIZE 8192
 #define MAXLINE 8192
 #define MAXBUF 8192
 #define LISTENQ 1024
+
+typedef struct sockaddr SA;
 
 typedef struct{
     int rio_fd;
