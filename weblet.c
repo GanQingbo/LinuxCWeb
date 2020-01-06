@@ -8,14 +8,16 @@
 #include<sys/socket.h>//socket函数
 
 
-void process_trans(int fd);
-void read_requesthdrs(rio_t *rp);
+void process_trans(int fd);//HTTP事务处理
+void read_requesthdrs(rio_t *rp);//HTTP额外请求报头的读取
 int is_static(char *uri);
-void parse_static_uri(char *uri, char *filename);
+void parse_static_uri(char *uri, char *filename);//URI解释
 void parse_dynamic_uri(char *uri, char *filename, char *cgiargs);
-void feed_static(int fd, char *filename, int filesize);
+void feed_static(int fd, char *filename, int filesize);//服务静态内容
 void get_filetype(char *filename, char *filetype);
-void feed_dynamic(int fd, char *filename, char *cgiargs);
+void feed_dynamic(int fd, char *filename, char *cgiargs);//服务静态内容
+
+/*生成错误提示页面*/
 void error_request(int fd, char *cause, char *errnum,
                  char *shortmsg, char *description);
 
