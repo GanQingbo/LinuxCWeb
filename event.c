@@ -30,6 +30,7 @@ void process_trans(int fd)
             error_request(fd, filename, "404", "Not found",
                     "weblet could not find this file");
             return;
+    }
     if (static_flag) { //处理静态内容
             if (!(S_ISREG(sbuf.st_mode)) || !(S_IRUSR & sbuf.st_mode)) {//判断是否有读权限
                error_request(fd, filename, "403", "Forbidden",
