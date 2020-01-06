@@ -149,7 +149,7 @@ void feed_dynamic(int fd,char *filename,char *cg)
             close(pfd[1]);
             dup2(pfd[0],STDIN_FILENO);
             dup2(fd,STDOUT_FILENO);
-            execve(filename,emptylist,environ);
+            execve(filename, emptylist,__environ);
         }
         close(pfd[0]);
         write(pfd[1],cg,strlen(cg)+1);
