@@ -141,16 +141,16 @@ void feed_dynamic(int fd,char *filename,char *cg)
 {
         char buf[MAXLINE],*emptylist[]={NULL};
         int pfd[2];
-        sprintf(buf,"HTTP/1.0 200\r\n");
+        sprintf(buf,"HTTP/1.0 200 OK\r\n");
         rio_writen(fd,buf,strlen(buf));
-        sprintf(buf,"WebServer\r\n");
+        sprintf(buf,"Server:MyWebServer\r\n");
         rio_writen(fd,buf,strlen(buf));
         pipe(pfd);
         if(fork()==0){
             close(pfd[1]);
             dup2(pfd[0],STDIN_FILENO);
             dup2(fd,STDOUT_FILENO);
-            execve(filename, emptylist,__environ);
+            execve(filename, emptylist,environ);
         }
         close(pfd[0]);
         write(pfd[1],cg,strlen(cg)+1);
