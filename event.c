@@ -61,16 +61,18 @@ int is_static(char *uri)
 void error_request(int fd,char *cause,char *errnum,char *shortmsg,char *description)
 {
         char buf[MAXLINE],body[MAXBUF];
+        
         sprintf(body,"<html><title>error request</title>");
         sprintf(body,"%s<body>\r\n",body);
         sprintf(body,"%s%s:%s\r\n",body,errnum,shortmsg);
         sprintf(body,"%s<p>%s:%s\r\n",body,description,cause);
         sprintf(body,"%s<hr><em>WebServer</em>\r\n",body);
+        
         sprintf(buf,"HTTP/1.0%s%s\r\n",errnum,shortmsg);
         rio_writen(fd,buf,strlen(buf));
         sprintf(buf,"Content-type:text/html\r\n");
         rio_writen(fd,buf,strlen(buf));
-        sprintf(buf,"ContentLength:%d\r\n\r\n",(int)strlen(body));
+        sprintf(buf,"Content-length:%d\r\n\r\n",(int)strlen(body));
         rio_writen(fd,buf,strlen(buf));
         rio_writen(fd,body,strlen(body));
         
@@ -102,11 +104,10 @@ void parse_dynamic_uri(char *uri,char *filename,char *cg)
         if(ptr){
             strcpy(cg,ptr+1);
             *ptr='\0';
-        }else{
+        }else
             strcpy(cg,"");
-            strcpy(filename,".");
-            strcat(filename,uri);
-        }
+        strcpy(filename,".");
+        strcat(filename,uri);
 }
 //静态网页
 void feed_static(int fd,char *filename,int filesize)
