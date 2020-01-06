@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     while (1) {//利用循环不断接收链接请求
             clientlen = sizeof(clientaddr);
             conn_sock = accept(listen_sock, (SA *)&clientaddr, &clientlen);
-            pthread_create(&tid,NULL,process_trans,conn_sock);//创建处理线程
+            pthread_create(&tid,NULL,(void*(*)(void*))process_trans,(void*)&conn_sock);//创建处理线程
             close(conn_sock); //关闭连接
     }
 }
