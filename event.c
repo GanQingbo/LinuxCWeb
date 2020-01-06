@@ -130,7 +130,7 @@ void get_filetype(char *filename,char*filetype)
                 strcpy(filetype,"text/html");
         else if(strstr(filename,".jpg"))
                 strcpy(filetype,"image/jpeg");
-        else if(strctr(filename,".mpeg"))
+        else if(strstr(filename,".mpeg"))
                 strcpy(filename,"video/mpeg");
         else
                 strcpy(filename,"text/html");
