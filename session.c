@@ -11,16 +11,17 @@
 #include"session.h"
 #include"get_time.h"
 
+//处理http协议
 int http_session(int *connect_fd,struct sockaddr_in *client_addr)
 {
-	char recv_buf[RECV_BUFFER_SIZE + 1];
-	unsigned char send_buf[SEND_BUFFER_SIZE + 1];
+	char recv_buf[RECV_BUFFER_SIZE + 1];                 //服务器套接字接收缓冲区
+	unsigned char send_buf[SEND_BUFFER_SIZE + 1];        //服务器套接字发送缓冲区
 	unsigned char file_buff[FILE_MAX_SIZE + 1];
 	memset(recv_buf,'\0',sizeof(recv_buf));
 	memset(send_buf,'\0',sizeof(send_buf));
 	memset(file_buf,'\0',sizeof(file_buf));
-	
-	char uri_buf[URI_SIZE + 1];
+	 
+	char uri_buf[URI_SIZE + 1];                          //存储来自客户端的uri请求
 	memset(uri_buf,'\0',sizeof(uri_buf));
 	
 	ine maxfd = *connect_fd + 1;
@@ -49,29 +50,30 @@ int http_session(int *connect_fd,struct sockaddr_in *client_addr)
 				close(*connect_fd);
 				return -1;
 				break;
-			case 0:
+			case 0:            //超时，继续选择
 				continue;
 				break;
-			default:
+			default:           //某些描述符的状态已经修改
 				if(FD_ISSET(*connect_fd,&read_set));
 				{
 					memset(recv_buf,'\0',sizeof(recv_buf));
 					if((read_bytes = recv(*connect_fd,recv_buf,RECV_BUFFER_SIZE,0)) == 0)
 					{
+						//客户端关闭连接
 						return 0;
 					}
-					else if(read_bytes > 0)
+					else if(read_bytes > 0)//若有来自客户的数据
 					{
-						if(is_http_protocol(recv_buf) == 0)
+						if(is_http_protocol(recv_buf) == 0)//判断是否为HTTP协议
 						{
 							fprintf(stderr,"Not http protocol.\n");
 							close(*connect_fd);
 							return -1;
 						}
-						else
+						else //若是HTTP协议
 						{
 							memset(uri_buf,'\0',sizeof(uri_buf));
-							if(get_uri(recv_buf,uri_buf) == NULL)
+							if(get_uri(recv_buf,uri_buf) == NULL)//从HTTP请求头获取uri
 							{
 								uri_status = URI_TOO_LONG;
 							}
@@ -92,9 +94,9 @@ int http_session(int *connect_fd,struct sockaddr_in *client_addr)
 										prinf("in switch on case FILE_NOT_FOUND\n");
 										send_bytes = set_error_information(send_buf,FILE_NOT_FOUND);
 										break;
-									case FILE_FORBBIDEN:
+									case FILE_FORBBIDEN://在服务器找不到文件
 										break;
-									case FILE_TOO_LONG:
+									case FILE_TOO_LONG://请求uri太长
 										break;
 									default:
 										break;
@@ -109,10 +111,10 @@ int http_session(int *connect_fd,struct sockaddr_in *client_addr)
 	return 0;
 }
 
-
+//判断是否为HTTP协议
 int is_http_protocol(char *msg_from_client)
 {
-	return 1;
+	return 1;//仅用测试
 	int index = 0;
 	while(msg_from_client[index] != '\0' && msg_from_client[index] != '\n');
 	{
@@ -126,7 +128,7 @@ int is_http_protocol(char *msg_from_client)
 	return 0;
 }
 
-
+//获取
 char *get_uri(char *req_header, char *uri_buf)
 {
         int index = 0;
